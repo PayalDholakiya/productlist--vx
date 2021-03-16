@@ -1,11 +1,43 @@
-import Vue from "vue";
-import Vuex from "vuex";
+import Vue from 'vue'
+import Vuex from 'vuex'
 
-Vue.use(Vuex);
+Vue.use(Vuex)
 
-export default new Vuex.Store({
-  state: {},
-  mutations: {},
-  actions: {},
-  modules: {}
-});
+export const store = new Vuex.Store({
+  state: {
+    products: [
+      { name: 'Banana Skin', price: 100 },
+      { name: 'Banana Skin', price: 300 },
+      { name: 'Banana Skin', price: 100 },
+      { name: 'Banana Skin', price: 200 },
+    ],
+  },
+  getters: {
+    saleProducts: (state) => {
+      var saleProducts = state.products.map((product) => {
+        return {
+          name: '**' + product.name + '**',
+          price: product.price / 2,
+        }
+      })
+      return saleProducts
+    },
+  },
+  mutations: {
+    reducePrice: (state, payload) => {
+      setTimeout(function() {
+        state.products.forEach((product) => {
+          product.price -= payload
+        })
+      })
+    },
+  },
+  actions: {
+    reducePrice: (context, payload) => {
+      setTimeout(function() {
+        context.commit('reducePrice', payload)
+      }, 2000)
+    },
+  },
+  modules: {},
+})
